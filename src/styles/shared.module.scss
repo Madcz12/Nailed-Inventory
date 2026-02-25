@@ -1,0 +1,443 @@
+@import 'variables';
+@import 'mixins';
+
+.formTableLayout {
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 24px;
+  height: 100%;
+}
+
+.formSide {
+  @include card;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-self: start;
+}
+
+.formTitle {
+  font-size: $font-size-lg;
+  font-weight: 700;
+  color: $gray-800;
+  padding-bottom: 12px;
+  border-bottom: 2px solid $primary-100;
+  margin-bottom: 4px;
+}
+
+.formGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.formActions {
+  display: flex;
+  gap: 10px;
+  padding-top: 8px;
+  flex-wrap: wrap;
+}
+
+.tableSide {
+  @include card;
+  padding: 24px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.tableTitle {
+  font-size: $font-size-lg;
+  font-weight: 700;
+  color: $gray-800;
+  margin-bottom: 16px;
+}
+
+/* Field group */
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.fieldLabel {
+  font-size: $font-size-sm;
+  font-weight: 600;
+  color: $gray-600;
+}
+
+.fieldInput {
+  @include input-base;
+}
+
+.fieldSelect {
+  @include input-base;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%239ea3b3' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 36px;
+  cursor: pointer;
+}
+
+/* Buttons */
+.btnPrimary {
+  @include button-base;
+  @include gradient-primary;
+  color: #fff;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: $shadow-glow;
+  }
+}
+
+.btnSecondary {
+  @include button-base;
+  background: $gray-100;
+  color: $gray-700;
+  border: 1px solid $gray-300;
+
+  &:hover:not(:disabled) {
+    background: $gray-200;
+  }
+}
+
+.btnDanger {
+  @include button-base;
+  background: $danger;
+  color: #fff;
+
+  &:hover:not(:disabled) {
+    background: darken($danger, 8%);
+    transform: translateY(-1px);
+  }
+}
+
+.btnSuccess {
+  @include button-base;
+  background: $success;
+  color: #fff;
+
+  &:hover:not(:disabled) {
+    background: darken($success, 8%);
+  }
+}
+
+/* Data Table */
+.tableWrapper {
+  flex: 1;
+  overflow: auto;
+  @include scrollbar;
+}
+
+.dataTable {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: $font-size-sm;
+
+  th {
+    position: sticky;
+    top: 0;
+    background: $gray-50;
+    padding: 10px 12px;
+    text-align: left;
+    font-weight: 600;
+    color: $gray-600;
+    border-bottom: 2px solid $gray-200;
+    white-space: nowrap;
+    font-size: $font-size-xs;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  td {
+    padding: 10px 12px;
+    border-bottom: 1px solid $gray-100;
+    color: $gray-700;
+    vertical-align: middle;
+  }
+
+  tbody tr {
+    transition: background $transition-fast;
+
+    &:hover {
+      background: $primary-50;
+    }
+
+    &.selected {
+      background: rgba($primary-500, 0.08);
+      border-left: 3px solid $primary-500;
+    }
+  }
+}
+
+.checkboxCell {
+  width: 40px;
+  text-align: center;
+}
+
+.checkbox {
+  width: 16px;
+  height: 16px;
+  accent-color: $primary-500;
+  cursor: pointer;
+}
+
+.statusBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 3px 10px;
+  border-radius: 100px;
+  font-size: $font-size-xs;
+  font-weight: 600;
+
+  &.active {
+    background: rgba($success, 0.1);
+    color: darken($success, 10%);
+  }
+
+  &.inactive {
+    background: rgba($danger, 0.1);
+    color: color-mix(in srgb, $danger, black 10%);
+  }
+}
+
+.statusDot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 40px 20px;
+  color: $gray-400;
+  font-size: $font-size-md;
+}
+
+/* Tab switcher */
+.tabSwitcher {
+  display: flex;
+  gap: 0;
+  background: $gray-100;
+  border-radius: $border-radius-sm;
+  padding: 4px;
+  margin-bottom: 24px;
+}
+
+.tab {
+  flex: 1;
+  padding: 10px 20px;
+  font-size: $font-size-md;
+  font-weight: 600;
+  border: none;
+  background: transparent;
+  color: $gray-500;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: all $transition-fast;
+
+  &.activeTab {
+    background: #fff;
+    color: $primary-600;
+    box-shadow: $shadow-sm;
+  }
+
+  &:hover:not(.activeTab) {
+    color: $gray-700;
+  }
+}
+
+/* Page header */
+.pageHeader {
+  margin-bottom: 24px;
+}
+
+.pageTitle {
+  font-size: $font-size-2xl;
+  font-weight: 800;
+  color: $gray-800;
+  margin-bottom: 4px;
+}
+
+.pageSubtitle {
+  font-size: $font-size-md;
+  color: $gray-500;
+}
+
+/* Section title for forms */
+.sectionTitle {
+  font-size: $font-size-md;
+  font-weight: 700;
+  color: $primary-600;
+  padding: 8px 0 4px;
+  border-bottom: 1px dashed $primary-200;
+  margin-bottom: 4px;
+}
+
+/* Inline fields */
+.inlineFields {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+/* Items table for purchases/sales */
+.itemsTable {
+  margin-top: 16px;
+
+  .dataTable {
+    font-size: $font-size-xs;
+  }
+}
+
+.totalRow {
+  display: flex;
+  justify-content: flex-end;
+  gap: 20px;
+  padding: 12px 0;
+  font-size: $font-size-base;
+  font-weight: 700;
+  color: $gray-800;
+}
+
+/* Report filter bar */
+.filterBar {
+  @include card;
+  padding: 16px 24px;
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.filterField {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 160px;
+
+  label {
+    font-size: $font-size-xs;
+    font-weight: 600;
+    color: $gray-600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  input, select {
+    @include input-base;
+    padding: 8px 12px;
+    font-size: $font-size-sm;
+  }
+}
+
+.selectRow {
+  @include flex-center;
+  width: 30px;
+  height: 30px;
+  border: none;
+  background: transparent;
+  color: $gray-400;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: all $transition-fast;
+
+  &:hover {
+    background: $primary-50;
+    color: $primary-600;
+  }
+
+  &.selectedRow {
+    background: $primary-500;
+    color: #fff;
+  }
+}
+
+/* Detail view */
+.detailCard {
+  @include card;
+  padding: 28px;
+  max-width: 900px;
+}
+
+.detailGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.detailField {
+  .detailLabel {
+    font-size: $font-size-xs;
+    font-weight: 600;
+    color: $gray-500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 2px;
+  }
+
+  .detailValue {
+    font-size: $font-size-base;
+    font-weight: 500;
+    color: $gray-800;
+  }
+}
+
+.detailActions {
+  display: flex;
+  gap: 10px;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid $gray-200;
+}
+
+/* File upload */
+.fileUpload {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  input[type="file"] {
+    position: absolute;
+    width: 0;
+    height: 0;
+    opacity: 0;
+  }
+}
+
+.fileUploadBtn {
+  @include button-base;
+  background: $gray-100;
+  color: $gray-700;
+  border: 1px dashed $gray-300;
+  font-weight: 500;
+  padding: 8px 16px;
+  font-size: $font-size-sm;
+
+  &:hover {
+    background: $primary-50;
+    border-color: $primary-300;
+    color: $primary-600;
+  }
+}
+
+.fileName {
+  font-size: $font-size-sm;
+  color: $gray-500;
+}
+
+.logoPreview {
+  width: 60px;
+  height: 60px;
+  border-radius: $border-radius-sm;
+  object-fit: cover;
+  border: 2px solid $gray-200;
+}

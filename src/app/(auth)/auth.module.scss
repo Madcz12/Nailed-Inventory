@@ -1,0 +1,154 @@
+@import "../../styles/variables";
+@import "../../styles/mixins";
+
+.authWrapper {
+  min-height: 100vh;
+  @include flex-center;
+  background: linear-gradient(
+    135deg,
+    $primary-900 0%,
+    $primary-700 40%,
+    $accent-700 100%
+  );
+  padding: 24px;
+  position: relative;
+  overflow: hidden;
+
+  // Decorative floating orbs
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.3;
+    pointer-events: none;
+  }
+
+  &::before {
+    width: 400px;
+    height: 400px;
+    background: $accent-500;
+    top: -100px;
+    right: -100px;
+  }
+
+  &::after {
+    width: 350px;
+    height: 350px;
+    background: $primary-400;
+    bottom: -80px;
+    left: -80px;
+  }
+}
+
+.contentArea {
+  width: 100%;
+  max-width: 440px;
+  position: relative;
+  z-index: 10;
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(20px);
+  border-radius: $border-radius-xl;
+  box-shadow:
+    $shadow-xl,
+    0 0 60px rgba($primary-500, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  padding: 40px 36px;
+  animation: fadeInUp 0.5s ease;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.logo {
+  font-size: 2rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, $primary-600, $accent-500);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 6px;
+  letter-spacing: -0.5px;
+}
+
+.subtitle {
+  color: $gray-500;
+  font-size: $font-size-md;
+  font-weight: 400;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.errorBox {
+  background: rgba($danger, 0.08);
+  color: $danger;
+  padding: 12px 16px;
+  border-radius: $border-radius-sm;
+  font-size: $font-size-sm;
+  text-align: center;
+  border: 1px solid rgba($danger, 0.15);
+  animation: fadeInUp 0.3s ease;
+}
+
+.successBox {
+  background: rgba($success, 0.08);
+  color: darken($success, 10%);
+  padding: 12px 16px;
+  border-radius: $border-radius-sm;
+  font-size: $font-size-sm;
+  text-align: center;
+  border: 1px solid rgba($success, 0.15);
+  animation: fadeInUp 0.3s ease;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.forgotPassword {
+  text-align: right;
+  margin-top: -12px;
+  font-size: $font-size-sm;
+}
+
+.footer {
+  text-align: center;
+  margin-top: 8px;
+  font-size: $font-size-sm;
+  color: $gray-500;
+}
+
+.link {
+  color: $primary-600;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color $transition-fast;
+
+  &:hover {
+    color: $primary-700;
+    text-decoration: underline;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

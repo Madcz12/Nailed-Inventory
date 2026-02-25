@@ -1,0 +1,174 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id               Int        @id @default(autoincrement())
+  documentNumber   String     @unique @map("document_number")
+  fullName         String     @map("full_name")
+  email            String     @unique
+  password         String
+  role             Role       @default(OPERADOR)
+  status           Boolean    @default(true)
+  createdAt        DateTime   @default(now()) @map("created_at")
+  updatedAt        DateTime   @updatedAt @map("updated_at")
+  purchases        Purchase[]
+  sales            Sale[]
+  resetToken       String?    @map("reset_token")
+  resetTokenExpiry DateTime?  @map("reset_token_expiry")
+
+  @@map("users")
+}
+
+model Category {
+  id          Int       @id @default(autoincrement())
+  description String
+  status      Boolean   @default(true)
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+  products    Product[]
+
+  @@map("categories")
+}
+
+model Product {
+  id                   Int                   @id @default(autoincrement())
+  code                 String                @unique
+  name                 String
+  description          String?
+  categoryId           Int                   @map("category_id")
+  status               Boolean               @default(true)
+  stock                Int                   @default(0)
+  salePrice            Float                 @default(0) @map("sale_price")
+  bottleSize           Float                 @default(0) @map("bottle_size")
+  unitQuantity         Int                   @default(1) @map("unit_quantity")
+  createdAt            DateTime              @default(now()) @map("created_at")
+  updatedAt            DateTime              @updatedAt @map("updated_at")
+  category             Category              @relation(fields: [categoryId], references: [id])
+  purchaseItems        PurchaseItem[]
+  saleItems            SaleItem[]
+  inventoryAdjustments InventoryAdjustment[]
+
+  @@map("products")
+}
+
+model InventoryAdjustment {
+  id        Int      @id @default(autoincrement())
+  productId Int      @map("product_id")
+  type      String // "ENTRY" or "EXIT"
+  quantity  Int
+  reason    String
+  date      DateTime @default(now())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+  product   Product  @relation(fields: [productId], references: [id])
+
+  @@map("inventory_adjustments")
+}
+
+model Business {
+  id        Int      @id @default(autoincrement())
+  name      String
+  rif       String   @unique
+  address   String
+  logoUrl   String?  @map("logo_url")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("businesses")
+}
+
+model Client {
+  id             Int      @id @default(autoincrement())
+  documentNumber String   @unique @map("document_number")
+  fullName       String   @map("full_name")
+  email          String
+  phone          String
+  status         Boolean  @default(true)
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+  sales          Sale[]
+
+  @@map("clients")
+}
+
+model Supplier {
+  id             Int        @id @default(autoincrement())
+  documentNumber String     @unique @map("document_number")
+  companyName    String     @map("company_name")
+  email          String
+  phone          String
+  status         Boolean    @default(true)
+  createdAt      DateTime   @default(now()) @map("created_at")
+  updatedAt      DateTime   @updatedAt @map("updated_at")
+  purchases      Purchase[]
+
+  @@map("suppliers")
+}
+
+model Purchase {
+  id             Int            @id @default(autoincrement())
+  date           DateTime
+  documentType   String         @map("document_type")
+  documentNumber String         @unique @map("document_number")
+  supplierId     Int            @map("supplier_id")
+  userId         Int            @map("user_id")
+  createdAt      DateTime       @default(now()) @map("created_at")
+  updatedAt      DateTime       @updatedAt @map("updated_at")
+  items          PurchaseItem[]
+  supplier       Supplier       @relation(fields: [supplierId], references: [id])
+  user           User           @relation(fields: [userId], references: [id])
+
+  @@map("purchases")
+}
+
+model PurchaseItem {
+  id            Int      @id @default(autoincrement())
+  purchaseId    Int      @map("purchase_id")
+  productId     Int      @map("product_id")
+  purchasePrice Float    @map("purchase_price")
+  salePrice     Float    @map("sale_price")
+  quantity      Int
+  product       Product  @relation(fields: [productId], references: [id])
+  purchase      Purchase @relation(fields: [purchaseId], references: [id], onDelete: Cascade)
+
+  @@map("purchase_items")
+}
+
+model Sale {
+  id             Int        @id @default(autoincrement())
+  date           DateTime
+  documentType   String     @map("document_type")
+  documentNumber String     @unique @map("document_number")
+  clientId       Int        @map("client_id")
+  userId         Int        @map("user_id")
+  createdAt      DateTime   @default(now()) @map("created_at")
+  updatedAt      DateTime   @updatedAt @map("updated_at")
+  items          SaleItem[]
+  client         Client     @relation(fields: [clientId], references: [id])
+  user           User       @relation(fields: [userId], references: [id])
+
+  @@map("sales")
+}
+
+model SaleItem {
+  id        Int     @id @default(autoincrement())
+  saleId    Int     @map("sale_id")
+  productId Int     @map("product_id")
+  price     Float
+  quantity  Int
+  product   Product @relation(fields: [productId], references: [id])
+  sale      Sale    @relation(fields: [saleId], references: [id], onDelete: Cascade)
+
+  @@map("sale_items")
+}
+
+enum Role {
+  ADMIN
+  OPERADOR
+}

@@ -1,0 +1,91 @@
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin glass-card {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: $border-radius-lg;
+}
+
+@mixin gradient-primary {
+  background: linear-gradient(135deg, $primary-500, $accent-500);
+}
+
+@mixin gradient-text {
+  background: linear-gradient(135deg, $primary-400, $accent-400);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+@mixin card {
+  background: #fff;
+  border-radius: $border-radius-md;
+  box-shadow: $shadow-sm;
+  border: 1px solid $gray-200;
+}
+
+@mixin input-base {
+  width: 100%;
+  padding: 10px 14px;
+  font-size: $font-size-md;
+  font-family: $font-family;
+  border: 1.5px solid $gray-300;
+  border-radius: $border-radius-sm;
+  background: #fff;
+  color: $gray-800;
+  transition: border-color $transition-fast, box-shadow $transition-fast;
+  outline: none;
+
+  &::placeholder {
+    color: $gray-400;
+  }
+
+  &:focus {
+    border-color: $primary-500;
+    box-shadow: 0 0 0 3px rgba($primary-500, 0.12);
+  }
+}
+
+@mixin button-base {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 20px;
+  font-size: $font-size-md;
+  font-family: $font-family;
+  font-weight: 600;
+  border: none;
+  border-radius: $border-radius-sm;
+  cursor: pointer;
+  transition: all $transition-fast;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+@mixin scrollbar {
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: $gray-300;
+    border-radius: 3px;
+  }
+}

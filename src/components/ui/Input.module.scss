@@ -1,0 +1,96 @@
+@import '../../styles/variables';
+
+.group {
+  width: 100%;
+}
+
+.label {
+  display: block;
+  font-size: $font-size-sm;
+  font-weight: 600;
+  color: $gray-700;
+  margin-bottom: 6px;
+}
+
+.inputWrapper {
+  position: relative;
+}
+
+.input {
+  width: 100%;
+  padding: 11px 14px;
+  font-size: $font-size-md;
+  font-family: $font-family;
+  color: $gray-800;
+  background: $gray-50;
+  border: 1.5px solid $gray-200;
+  border-radius: $border-radius-sm;
+  outline: none;
+  transition: border-color $transition-fast, box-shadow $transition-fast, background $transition-fast;
+
+  &::placeholder {
+    color: $gray-400;
+  }
+
+  &:hover:not(:focus):not(:disabled) {
+    border-color: $gray-300;
+  }
+
+  &:focus {
+    border-color: $primary-500;
+    box-shadow: 0 0 0 3px rgba($primary-500, 0.12);
+    background: #fff;
+  }
+
+  &:disabled {
+    background: $gray-100;
+    color: $gray-400;
+    cursor: not-allowed;
+  }
+
+  &.hasError {
+    border-color: $danger;
+
+    &:focus {
+      box-shadow: 0 0 0 3px rgba($danger, 0.12);
+    }
+  }
+
+  &.withToggle {
+    padding-right: 46px;
+  }
+}
+
+.toggleButton {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  padding: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $gray-400;
+  cursor: pointer;
+  border-radius: $border-radius-sm;
+  transition: color $transition-fast, background $transition-fast;
+  z-index: 5;
+
+  &:hover {
+    color: $primary-500;
+    background: rgba($primary-500, 0.05);
+  }
+
+  &:focus {
+    outline: none;
+    color: $primary-600;
+  }
+}
+
+.errorText {
+  margin-top: 4px;
+  font-size: $font-size-xs;
+  color: $danger;
+}

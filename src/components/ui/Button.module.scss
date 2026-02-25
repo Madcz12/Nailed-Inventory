@@ -1,0 +1,93 @@
+@import '../../styles/variables';
+@import '../../styles/mixins';
+
+.button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: $border-radius-sm;
+  padding: 12px 20px;
+  font-size: $font-size-md;
+  font-weight: 600;
+  font-family: $font-family;
+  border: none;
+  cursor: pointer;
+  transition: all $transition-fast;
+  outline: none;
+
+  &:focus-visible {
+    box-shadow: 0 0 0 3px rgba($primary-500, 0.3);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &.fullWidth {
+    width: 100%;
+  }
+}
+
+.primary {
+  @include gradient-primary;
+  color: #fff;
+  box-shadow: 0 4px 14px rgba($primary-500, 0.35);
+
+  &:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba($primary-500, 0.45);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+}
+
+.secondary {
+  background: #fff;
+  color: $gray-700;
+  border: 1.5px solid $gray-200;
+
+  &:hover:not(:disabled) {
+    background: $gray-50;
+    border-color: $gray-300;
+  }
+}
+
+.outline {
+  background: transparent;
+  color: $primary-600;
+  border: 2px solid $primary-600;
+
+  &:hover:not(:disabled) {
+    background: $primary-50;
+  }
+}
+
+.danger {
+  background: $danger;
+  color: #fff;
+  box-shadow: 0 4px 14px rgba($danger, 0.3);
+
+  &:hover:not(:disabled) {
+    background: darken($danger, 8%);
+    transform: translateY(-1px);
+  }
+}
+
+.spinner {
+  animation: spin 0.7s linear infinite;
+  width: 16px;
+  height: 16px;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

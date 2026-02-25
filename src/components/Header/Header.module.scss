@@ -1,0 +1,81 @@
+@import '../../styles/variables';
+@import '../../styles/mixins';
+
+.header {
+  @include flex-between;
+  height: $header-height;
+  padding: 0 32px;
+  background: #fff;
+  border-bottom: 1px solid $gray-200;
+  position: sticky;
+  top: 0;
+  z-index: 50;
+}
+
+.left {
+  display: flex;
+  align-items: center;
+}
+
+.greeting {
+  font-size: $font-size-lg;
+  font-weight: 700;
+  color: $gray-800;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.iconBtn {
+  @include flex-center;
+  width: 38px;
+  height: 38px;
+  border: 1px solid $gray-200;
+  background: $gray-50;
+  color: $gray-600;
+  border-radius: $border-radius-sm;
+  cursor: pointer;
+  transition: all $transition-fast;
+
+  &:hover {
+    background: $primary-50;
+    border-color: $primary-200;
+    color: $primary-600;
+  }
+}
+
+.userBadge {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 14px 6px 6px;
+  background: $gray-50;
+  border: 1px solid $gray-200;
+  border-radius: 100px;
+}
+
+.avatar {
+  @include flex-center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  @include gradient-primary;
+  color: #fff;
+}
+
+.userName {
+  font-size: $font-size-sm;
+  font-weight: 600;
+  color: $gray-700;
+}
+
+.logoutBtn {
+  &:hover {
+    background: rgba($danger, 0.08);
+    border-color: rgba($danger, 0.2);
+    color: $danger;
+  }
+}

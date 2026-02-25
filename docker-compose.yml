@@ -1,0 +1,18 @@
+version: "3.8"
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: nailed_postgres
+    environment:
+      POSTGRES_USER: nailed_user
+      POSTGRES_PASSWORD: nailed_pass_2026
+      POSTGRES_DB: nailed_db
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  pgdata:

@@ -1,0 +1,81 @@
+// === NAILED DESIGN SYSTEM ===
+// Violet / Pink palette for beauty brand
+
+// Primary palette
+$primary-50: #f5f0ff;
+$primary-100: #ede5ff;
+$primary-200: #ddd0ff;
+$primary-300: #c4a8ff;
+$primary-400: #a875ff;
+$primary-500: #8b46ff;
+$primary-600: #7c22ff;
+$primary-700: #6e14eb;
+$primary-800: #5c11c5;
+$primary-900: #4c0fa1;
+
+// Accent (Pink)
+$accent-50: #fff0f6;
+$accent-100: #ffe0ed;
+$accent-200: #ffc2dc;
+$accent-300: #ff94bf;
+$accent-400: #ff5c99;
+$accent-500: #ff2d7a;
+$accent-600: #f00d5b;
+$accent-700: #d10048;
+$accent-800: #ad043d;
+$accent-900: #8f0937;
+
+// Neutrals
+$gray-50: #f8f9fc;
+$gray-100: #f1f3f8;
+$gray-200: #e5e8f0;
+$gray-300: #d1d5e0;
+$gray-400: #9ea3b3;
+$gray-500: #6b7085;
+$gray-600: #4d5166;
+$gray-700: #3a3d4e;
+$gray-800: #282a38;
+$gray-900: #1a1b26;
+
+// Semantic
+$success: #22c55e;
+$warning: #f59e0b;
+$danger: #ef4444;
+$info: #3b82f6;
+
+// Sizing
+$sidebar-width: 260px;
+$sidebar-collapsed: 72px;
+$header-height: 64px;
+$border-radius-sm: 6px;
+$border-radius-md: 10px;
+$border-radius-lg: 16px;
+$border-radius-xl: 24px;
+
+// Shadows
+$shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+$shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+$shadow-lg: 0 8px 30px rgba(0, 0, 0, 0.12);
+$shadow-xl: 0 16px 50px rgba(0, 0, 0, 0.15);
+$shadow-glow: 0 0 20px rgba($primary-500, 0.3);
+
+// Typography
+$font-family:
+  "Inter",
+  -apple-system,
+  BlinkMacSystemFont,
+  "Segoe UI",
+  sans-serif;
+$font-size-xs: 0.75rem;
+$font-size-sm: 0.8125rem;
+$font-size-md: 0.875rem;
+$font-size-base: 1rem;
+$font-size-lg: 1.125rem;
+$font-size-xl: 1.25rem;
+$font-size-2xl: 1.5rem;
+$font-size-3xl: 1.875rem;
+
+// Transitions
+$transition-fast: 150ms ease;
+$transition-base: 250ms ease;
+$transition-slow: 350ms ease;
