@@ -162,7 +162,7 @@ function VerDetalle() {
     });
 
     const total = detail.items.reduce((a, i) => a + i.price * i.quantity, 0);
-    const finalY = (doc as unknown as Record<string, number>).lastAutoTable?.finalY || 100;
+    const finalY = (doc as any).lastAutoTable?.finalY || 100;
     doc.setFontSize(12); doc.text(`Total: ${total.toFixed(2)}`, 14, finalY + 10);
     doc.save(`venta_${detail.documentNumber}.pdf`);
   };

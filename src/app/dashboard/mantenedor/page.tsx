@@ -6,7 +6,7 @@ import s from '@/styles/shared.module.scss';
 
 // ============== TYPES ==============
 interface Category { id: number; description: string; status: boolean; }
-interface Product { id: number; code: string; name: string; description: string; categoryId: number; status: boolean; bottleSize: number; unitQuantity: number; stock: number; category?: Category; }
+interface Product { id: number; code: string; name: string; description: string; categoryId: number; status: boolean; bottleSize: number; unitQuantity: number; salePrice: number; stock: number; category?: Category; }
 interface Business { id: number; name: string; rif: string; address: string; logoUrl: string | null; }
 
 // ============== COMPONENT ==============
