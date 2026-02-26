@@ -6,9 +6,19 @@ export async function GET() {
   try {
     const userCount = await prisma.user.count();
     console.log('User count:', userCount);
-    return NextResponse.json({ message: 'Connected', userCount });
+    return NextResponse.json({ 
+      message: 'Connected', 
+      userCount, 
+      databaseUrlLength: process.env.DATABASE_URL?.length || 0,
+      env: process.env.NODE_ENV
+    });
   } catch (e: any) {
-    console.error('Prisma Error:', e);
-    return NextResponse.json({ error: e.message }, { status: 500 });
+    console.error('Prisma Diagnostic Error:', e);
+    return NextResponse.json({ 
+      error: e.message,
+      code: e.code,
+      meta: e.meta,
+      stack: process.env.NODE_ENV === 'development' ? e.stack : undefined
+    }, { status: 500 });
   }
 }
