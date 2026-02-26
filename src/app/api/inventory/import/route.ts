@@ -9,12 +9,19 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Datos de importación inválidos' }, { status: 400 });
     }
 
+    // 1. Get all existing categories and products for efficient lookup
+    const existingCategories = await prisma.category.findMany();
+    const categoryMap = new Map(existingCategories.map(c => [c.description.toLowerCase(), c.id]));
+    
+    // We only need to check codes that are in the import list
+    const importCodes = items.map(i => String(i.code || '').trim()).filter(Boolean);
+    const existingProducts = await prisma.product.findMany({
+      where: { code: { in: importCodes } }
+    });
+    const productMap = new Map(existingProducts.map(p => [p.code, p]));
+
     const result = await prisma.$transaction(async (tx) => {
       const summaries = { created: 0, updated: 0, skipped: 0 };
-      
-      // Get all existing categories and products for efficient lookup
-      const existingCategories = await tx.category.findMany();
-      const categoryMap = new Map(existingCategories.map(c => [c.description.toLowerCase(), c.id]));
       
       for (const item of items) {
         // 1. Manage Category
@@ -32,7 +39,7 @@ export async function POST(req: NextRequest) {
 
         // 2. Manage Product
         const productCode = String(item.code || '').trim();
-        let product = await tx.product.findUnique({ where: { code: productCode } });
+        let product = productMap.get(productCode);
 
         if (!product) {
           // Create new product
@@ -49,6 +56,7 @@ export async function POST(req: NextRequest) {
             },
           });
           summaries.created++;
+          productMap.set(productCode, product); // Add to map for subsequent items if duplicated
 
           // Create adjustment for initial stock if present
           if (item.stock && Number(item.stock) > 0) {
@@ -63,12 +71,13 @@ export async function POST(req: NextRequest) {
             });
           }
         } else {
-          // Skip or Update? For now skip to be safe, or update skip count
           summaries.skipped++;
         }
       }
 
       return summaries;
+    }, {
+      timeout: 30000 // 30 seconds
     });
 
     return NextResponse.json(result);
