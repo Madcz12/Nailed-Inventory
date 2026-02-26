@@ -18,19 +18,31 @@ import {
 import styles from './Sidebar.module.scss';
 
 const menuItems = [
-  { label: 'Usuarios', icon: FiUsers, href: '/dashboard/usuarios' },
-  { label: 'Mantenedor', icon: FiSettings, href: '/dashboard/mantenedor' },
+  { label: 'Usuarios', icon: FiUsers, href: '/dashboard/usuarios', adminOnly: true },
+  { label: 'Mantenedor', icon: FiSettings, href: '/dashboard/mantenedor', adminOnly: true },
   { label: 'Inventario', icon: FiPackage, href: '/dashboard/inventario' },
   { label: 'Clientes', icon: FiUserCheck, href: '/dashboard/clientes' },
-  { label: 'Proveedores', icon: FiTruck, href: '/dashboard/proveedores' },
+  { label: 'Proveedores', icon: FiTruck, href: '/dashboard/proveedores', adminOnly: true },
   { label: 'Compras', icon: FiShoppingCart, href: '/dashboard/compras' },
   { label: 'Ventas', icon: FiDollarSign, href: '/dashboard/ventas' },
   { label: 'Reportes', icon: FiBarChart2, href: '/dashboard/reportes' },
 ];
 
-export default function Sidebar() {
+interface SidebarProps {
+  user: {
+    role: string;
+  } | null;
+}
+
+export default function Sidebar({ user }: SidebarProps) {
   const [collapsed, setCollapsed] = useState(false);
   const pathname = usePathname();
+
+  // Filter items based on user role
+  const filteredItems = menuItems.filter(item => {
+    if (item.adminOnly && user?.role !== 'ADMIN') return false;
+    return true;
+  });
 
   return (
     <aside className={`${styles.sidebar} ${collapsed ? styles.collapsed : ''}`}>
@@ -50,7 +62,7 @@ export default function Sidebar() {
       </div>
 
       <nav className={styles.nav}>
-        {menuItems.map((item) => {
+        {filteredItems.map((item) => {
           const isActive = pathname.startsWith(item.href);
           return (
             <Link

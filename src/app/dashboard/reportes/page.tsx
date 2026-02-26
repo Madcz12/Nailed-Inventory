@@ -6,7 +6,7 @@ import s from '@/styles/shared.module.scss';
 
 interface Supplier { id: number; documentNumber: string; companyName: string; }
 
-interface ReportRow {
+interface ReportRow { // interface para los resultados
   id: number;
   date: string;
   documentType: string;
@@ -22,8 +22,7 @@ interface ReportRow {
   quantity: number;
   subtotal: number;
 }
-
-const filterOptions = [
+const filterOptions = [ // opciones de filtro
   { value: '', label: 'Todos los campos' },
   { value: 'date', label: 'Fecha de registro' },
   { value: 'documentType', label: 'Tipo de documento' },

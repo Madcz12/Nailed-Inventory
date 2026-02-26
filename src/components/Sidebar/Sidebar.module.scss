@@ -99,9 +99,14 @@
   }
 
   &.active {
-    background: linear-gradient(135deg, rgba($primary-500, 0.2), rgba($accent-500, 0.15));
-    color: #fff;
-    box-shadow: inset 3px 0 0 $primary-500;
+    background: rgba($primary-500, 0.15);
+    color: $primary-400;
+    box-shadow: inset 4px 0 0 $primary-500;
+    font-weight: 600;
+
+    svg {
+      color: $primary-500;
+    }
   }
 }
 

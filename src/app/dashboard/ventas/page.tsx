@@ -15,7 +15,7 @@ interface SaleDetail {
 }
 
 export default function VentasPage() {
-  const [activeTab, setActiveTab] = useState<'registrar' | 'detalle'>('registrar');
+  const [activeTab, setActiveTab] = useState<'registrar' | 'detalle'>('registrar'); // estado para el tab
   return (
     <>
       <div className={s.pageHeader}><h1 className={s.pageTitle}>Ventas</h1><p className={s.pageSubtitle}>Registro y consulta de ventas</p></div>
@@ -43,9 +43,9 @@ function RegistrarVenta() {
   const toast = (msg: string, type = 'success') => { const id = Date.now(); setToasts(t => [...t, { id, msg, type }]); setTimeout(() => setToasts(t => t.filter(x => x.id !== id)), 3000); };
   useEffect(() => { fetch('/api/products').then(r => r.json()).then(setProducts).catch(() => {}); }, []);
 
-  const searchClient = async () => {
+  const searchClient = async () => { // funcion para buscar cliente
     if (!clientDoc) return;
-    const r = await fetch(`/api/clients?documentNumber=${clientDoc}`);
+    const r = await fetch(`/api/clients?documentNumber=${clientDoc}`); // peticion para buscar cliente
     if (r.ok) { const data = await r.json(); if (Array.isArray(data) && data.length > 0) { setClient(data[0]); } else if (data.id) { setClient(data); } else { toast('Cliente no encontrado', 'error'); setClient(null); } }
   };
 
@@ -135,14 +135,14 @@ function VerDetalle() {
   const [toasts, setToasts] = useState<{ id: number; msg: string; type: string }[]>([]);
   const toast = (msg: string, type = 'success') => { const id = Date.now(); setToasts(t => [...t, { id, msg, type }]); setTimeout(() => setToasts(t => t.filter(x => x.id !== id)), 3000); };
 
-  const search = async () => {
+  const search = async () => { // funcion para buscar venta
     if (!docNumber) return;
-    const r = await fetch(`/api/sales?documentNumber=${docNumber}`);
+    const r = await fetch(`/api/sales?documentNumber=${docNumber}`); // peticion para buscar venta
     if (r.ok) { const data = await r.json(); if (data) setDetail(data); else { toast('Venta no encontrada', 'error'); setDetail(null); } }
     else { toast('Venta no encontrada', 'error'); setDetail(null); }
   };
 
-  const downloadPDF = async () => {
+  const downloadPDF = async () => { // funcion para descargar pdf
     if (!detail) return;
     const { jsPDF } = await import('jspdf');
     const autoTable = (await import('jspdf-autotable')).default;

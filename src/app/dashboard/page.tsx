@@ -11,10 +11,11 @@ import Link from 'next/link';
 
 const COLORS = ['#8884d8', '#82ca9d', '#ffc658', '#ff8042', '#0088fe', '#00C49F', '#FFBB28'];
 
+// interfaz para el dashboard
 interface DashboardStats {
-  dailyData: any[];
-  categoryStats: any[];
-  summary: {
+  dailyData: any[]; // datos diarios 
+  categoryStats: any[]; // datos de categorias
+  summary: { // resumen general
     totalClients: number;
     totalProducts: number;
     totalSales: number;
@@ -23,6 +24,7 @@ interface DashboardStats {
 }
 
 export default function DashboardPage() {
+  // estados
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -39,6 +41,7 @@ export default function DashboardPage() {
       });
   }, []);
 
+  // quick access 
   const quickAccess = [
     { label: 'Productos', icon: <FiPackage size={20} />, link: '/dashboard/inventario', value: stats?.summary.totalProducts || 0, color: '#7c3aed' },
     { label: 'Clientes', icon: <FiUsers size={20} />, link: '/dashboard/clientes', value: stats?.summary.totalClients || 0, color: '#ec4899' },

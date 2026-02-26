@@ -5,6 +5,7 @@ import { FiArrowDown, FiArrowUp, FiRefreshCw, FiUploadCloud } from 'react-icons/
 import * as XLSX from 'xlsx';
 import s from '@/styles/shared.module.scss';
 
+// interface para el inventario
 interface InventoryItem {
   id: number;
   code: string;
@@ -18,10 +19,10 @@ interface InventoryItem {
 }
 
 export default function InventarioPage() {
-  const [items, setItems] = useState<InventoryItem[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [importing, setImporting] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [items, setItems] = useState<InventoryItem[]>([]); // estado para los items
+  const [loading, setLoading] = useState(true); // estado para el loading
+  const [importing, setImporting] = useState(false); // estado para el importando
+  const fileInputRef = useRef<HTMLInputElement>(null); // ref para el input de archivo
 
   const fetchData = async () => {
     setLoading(true);
@@ -44,33 +45,33 @@ export default function InventarioPage() {
   const handleImportClick = () => {
     fileInputRef.current?.click();
   };
-
+  // manejo del archivo 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
-    if (!file) return;
+    if (!file) return; // si no hay archivo, retorna
 
-    setImporting(true);
+    setImporting(true); // se pone en true el estado de importando
     const reader = new FileReader();
-    reader.onload = async (event) => {
+    reader.onload = async (event) => { // cuando se carga el archivo
       try {
-        const data = new Uint8Array(event.target?.result as ArrayBuffer);
-        const workbook = XLSX.read(data, { type: 'array' });
-        const sheetName = workbook.SheetNames[0];
-        const worksheet = workbook.Sheets[sheetName];
+        const data = new Uint8Array(event.target?.result as ArrayBuffer); // se convierte el archivo a un array de bytes
+        const workbook = XLSX.read(data, { type: 'array' }); // se lee el archivo
+        const sheetName = workbook.SheetNames[0]; // se obtiene el nombre de la hoja
+        const worksheet = workbook.Sheets[sheetName]; // se obtiene la hoja
         const json = XLSX.utils.sheet_to_json(worksheet);
 
-        // Map column names to our expected format
-        const mappedItems = json.map((row: any) => ({
+        // mapeo de columnas para nuestro formato esperado
+        const mappedItems = json.map((row: any) => ({ // se mapea el archivo
           code: row['Código'] || row['Codigo'] || row['Code'] || '',
           name: row['Producto'] || row['Nombre'] || row['Name'] || '',
           category: row['Categoría'] || row['Categoria'] || row['Category'] || 'General',
           bottleSize: Number(row['Presentación'] || row['Presentacion'] || row['Tamaño'] || row['Size'] || 0),
           stock: Number(row['Cantidad'] || row['Stock'] || row['Existencias'] || 0),
           salePrice: Number(row['Precio'] || row['Price'] || 0),
-        })).filter(item => item.code && item.name);
+        })).filter(item => item.code && item.name); // se filtra el archivo
 
         if (mappedItems.length === 0) {
-          alert('No se encontraron datos válidos en el archivo. Verifique los encabezados.');
+          alert('No se encontraron datos válidos en el archivo. Verifique los encabezados.'); // si no hay datos, muestra un alert
           return;
         }
 

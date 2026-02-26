@@ -55,6 +55,14 @@
   background: $gray-50;
   border: 1px solid $gray-200;
   border-radius: 100px;
+  text-decoration: none;
+  transition: all $transition-fast;
+
+  &:hover {
+    background: #fff;
+    border-color: $primary-300;
+    box-shadow: $shadow-sm;
+  }
 }
 
 .avatar {
@@ -66,10 +74,24 @@
   color: #fff;
 }
 
+.userInfo {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+}
+
 .userName {
   font-size: $font-size-sm;
   font-weight: 600;
   color: $gray-700;
+}
+
+.userRole {
+  font-size: 10px;
+  font-weight: 500;
+  color: $gray-400;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .logoutBtn {
