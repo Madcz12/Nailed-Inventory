@@ -42,7 +42,6 @@ export async function POST(request: NextRequest) {
     });
 
     // Remove password from response
-    // @ts-expect-error - Excluding password field for response
     const { password: _, ...userWithoutPassword } = newUser;
 
     return NextResponse.json({ message: 'Usuario registrado exitosamente', user: userWithoutPassword }, { status: 201 });
