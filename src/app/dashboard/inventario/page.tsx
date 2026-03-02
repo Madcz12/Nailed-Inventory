@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { FiArrowDown, FiArrowUp, FiRefreshCw, FiUploadCloud } from 'react-icons/fi';
+import { FiArrowDown, FiArrowUp, FiRefreshCw, FiUploadCloud, FiTrash2 } from 'react-icons/fi';
 import * as XLSX from 'xlsx';
 import s from '@/styles/shared.module.scss';
 
@@ -99,6 +99,32 @@ export default function InventarioPage() {
     reader.readAsArrayBuffer(file);
   };
 
+  const handleClearInventory = async () => {
+    if (!window.confirm('¿Estás seguro de que deseas limpiar todo el inventario? Esta acción eliminará permanentemente todos los productos y registros relacionados.')) {
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const res = await fetch('/api/inventory/clear', {
+        method: 'DELETE',
+      });
+
+      if (res.ok) {
+        alert('Inventario limpiado con éxito.');
+        setItems([]);
+      } else {
+        const error = await res.json();
+        alert(`Error al limpiar el inventario: ${error.error || 'Error desconocido'}`);
+      }
+    } catch (error) {
+      console.error('Clear inventory error:', error);
+      alert('Ocurrió un error al intentar limpiar el inventario.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       <div className={s.pageHeader}>
@@ -124,6 +150,14 @@ export default function InventarioPage() {
               style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
             >
               <FiUploadCloud size={18} /> {importing ? 'Importando...' : 'Importar Excel'}
+            </button>
+            <button 
+              className={s.btnDanger} 
+              onClick={handleClearInventory} 
+              disabled={loading || items.length === 0}
+              style={{ display: 'flex', alignItems: 'center', gap: '8px' }}
+            >
+              <FiTrash2 size={18} /> Limpiar Inventario
             </button>
             <button className={s.btnSecondary} onClick={fetchData} disabled={loading}>
               <FiRefreshCw className={loading ? 'animate-spin' : ''} /> Actualizar
