@@ -4,6 +4,9 @@ import "./globals.scss";
 export const metadata: Metadata = {
   title: "Nailed Inventory | Panel de Control",
   description: "Plataforma de inventario para productos de belleza - Nailed",
+  icons: {
+    icon: '/faviconnail.ico',
+  },
 };
 
 export default function RootLayout({
