@@ -1,9 +1,10 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { FiArrowDown, FiArrowUp, FiRefreshCw, FiUploadCloud, FiTrash2 } from 'react-icons/fi';
+import { FiArrowDown, FiArrowUp, FiRefreshCw, FiUploadCloud, FiTrash2, FiSearch } from 'react-icons/fi';
 import * as XLSX from 'xlsx';
 import s from '@/styles/shared.module.scss';
+/* import { Filter, Search } from "lucide-react"; */
 
 // interface para el inventario
 interface InventoryItem {
@@ -23,6 +24,13 @@ export default function InventarioPage() {
   const [loading, setLoading] = useState(true); // estado para el loading
   const [importing, setImporting] = useState(false); // estado para el importando
   const fileInputRef = useRef<HTMLInputElement>(null); // ref para el input de archivo
+  const [search, setSearch] = useState('');
+
+  const filteredItems = items.filter(item => 
+    item.name.toLowerCase().includes(search.toLowerCase()) || 
+    item.code.toLowerCase().includes(search.toLowerCase())
+  );
+
 
   const fetchData = async () => {
     setLoading(true);
@@ -45,6 +53,8 @@ export default function InventarioPage() {
   const handleImportClick = () => {
     fileInputRef.current?.click();
   };
+
+
   // manejo del archivo 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -143,6 +153,16 @@ export default function InventarioPage() {
               accept=".xlsx, .xls, .csv" 
               onChange={handleFileUpload}
             />
+            <div className={s.searchWrapper}>
+              <FiSearch className={s.searchIcon} size={18} />
+              <input
+                type="text"
+                className={s.searchInput}
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Buscar por nombre o código..."
+              />
+            </div>
             <button 
               className={s.btnPrimary} 
               onClick={handleImportClick} 
@@ -190,10 +210,10 @@ export default function InventarioPage() {
             <tbody>
               {loading ? (
                 <tr><td colSpan={8} className={s.emptyState}>Cargando inventario...</td></tr>
-              ) : items.length === 0 ? (
-                <tr><td colSpan={8} className={s.emptyState}>No hay productos registrados</td></tr>
+              ) : filteredItems.length === 0 ? (
+                <tr><td colSpan={8} className={s.emptyState}>No se encontraron productos</td></tr>
               ) : (
-                items.map((item) => (
+                filteredItems.map((item) => (
                   <tr key={item.id}>
                     <td style={{ fontWeight: '600' }}>{item.code}</td>
                     <td>{item.name}</td>

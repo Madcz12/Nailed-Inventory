@@ -1,5 +1,5 @@
-@import 'variables';
-@import 'mixins';
+@import "variables";
+@import "mixins";
 
 .formTableLayout {
   display: grid;
@@ -330,7 +330,8 @@
     letter-spacing: 0.5px;
   }
 
-  input, select {
+  input,
+  select {
     @include input-base;
     padding: 8px 12px;
     font-size: $font-size-sm;
@@ -440,4 +441,24 @@
   border-radius: $border-radius-sm;
   object-fit: cover;
   border: 2px solid $gray-200;
+}
+/* Search Bar */
+.searchWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-width: 250px;
+}
+
+.searchInput {
+  @include input-base;
+  padding-left: 38px; // Space for icon
+  height: 42px;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 12px;
+  color: $gray-400;
+  pointer-events: none;
 }
