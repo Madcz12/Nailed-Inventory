@@ -263,12 +263,10 @@ export default function InventarioPage() {
       <Dialog 
         open={isModalOpen} 
         onClose={() => setIsModalOpen(false)}
-        className="relative z-50"
+        className={s.modalOverlay}
       >
-        <div className="fixed inset-0 bg-black/30 backdrop-blur-sm" aria-hidden="true" />
-        
-        <div className="fixed inset-0 flex items-center justify-center p-4">
-          <Dialog.Panel className="mx-auto max-w-lg w-full bg-white rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-300">
+        <div className={s.modalContainer}>
+          <Dialog.Panel className={s.modalPanel}>
             <div className={s.pageHeader} style={{ marginBottom: 0, padding: '24px 28px', background: '#f8f9fc', borderBottom: '1px solid #edf2f7', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <div>
                 <Dialog.Title className={s.pageTitle} style={{ fontSize: '1.25rem', marginBottom: '2px' }}>Detalles del Producto</Dialog.Title>
