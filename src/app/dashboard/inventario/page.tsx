@@ -2,8 +2,10 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { FiArrowDown, FiArrowUp, FiRefreshCw, FiUploadCloud, FiTrash2, FiSearch } from 'react-icons/fi';
+import { IoClose } from 'react-icons/io5';
 import * as XLSX from 'xlsx';
 import s from '@/styles/shared.module.scss';
+import { Dialog } from '@headlessui/react';
 /* import { Filter, Search } from "lucide-react"; */
 
 // interface para el inventario
@@ -25,12 +27,14 @@ export default function InventarioPage() {
   const [importing, setImporting] = useState(false); // estado para el importando
   const fileInputRef = useRef<HTMLInputElement>(null); // ref para el input de archivo
   const [search, setSearch] = useState('');
+  const [selectedItem, setSelectedItem] = useState<InventoryItem | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
+  // filtrar items por nombre o codigo
   const filteredItems = items.filter(item => 
     item.name.toLowerCase().includes(search.toLowerCase()) || 
     item.code.toLowerCase().includes(search.toLowerCase())
   );
-
 
   const fetchData = async () => {
     setLoading(true);
@@ -135,6 +139,12 @@ export default function InventarioPage() {
     }
   };
 
+  
+  const handleRowClick = (item: InventoryItem) => {
+    setSelectedItem(item);
+    setIsModalOpen(true);
+  };
+
   return (
     <>
       <div className={s.pageHeader}>
@@ -154,7 +164,7 @@ export default function InventarioPage() {
               onChange={handleFileUpload}
             />
             <div className={s.searchWrapper}>
-              <FiSearch className={s.searchIcon} size={18} />
+              <FiSearch className={s.searchIcon} size={18} style={{ color: '#8b46ff' }} />
               <input
                 type="text"
                 className={s.searchInput}
@@ -162,6 +172,15 @@ export default function InventarioPage() {
                 onChange={(e) => setSearch(e.target.value)}
                 placeholder="Buscar por nombre o código..."
               />
+              {search && (
+                <button 
+                  className={s.clearSearch} 
+                  onClick={() => setSearch('')}
+                  title="Limpiar búsqueda"
+                >
+                  <IoClose size={20} />
+                </button>
+              )}
             </div>
             <button 
               className={s.btnPrimary} 
@@ -214,7 +233,12 @@ export default function InventarioPage() {
                 <tr><td colSpan={8} className={s.emptyState}>No se encontraron productos</td></tr>
               ) : (
                 filteredItems.map((item) => (
-                  <tr key={item.id}>
+                  <tr 
+                    key={item.id} 
+                    onClick={() => handleRowClick(item)}
+                    style={{ cursor: 'pointer' }}
+                    className={selectedItem?.id === item.id ? s.selected : ''}
+                  >
                     <td style={{ fontWeight: '600' }}>{item.code}</td>
                     <td>{item.name}</td>
                     <td>{item.bottleSize} ml</td>
@@ -235,6 +259,86 @@ export default function InventarioPage() {
           </table>
         </div>
       </div>
+
+      <Dialog 
+        open={isModalOpen} 
+        onClose={() => setIsModalOpen(false)}
+        className="relative z-50"
+      >
+        <div className="fixed inset-0 bg-black/30 backdrop-blur-sm" aria-hidden="true" />
+        
+        <div className="fixed inset-0 flex items-center justify-center p-4">
+          <Dialog.Panel className="mx-auto max-w-lg w-full bg-white rounded-2xl shadow-2xl overflow-hidden animate-in fade-in zoom-in duration-300">
+            <div className={s.pageHeader} style={{ marginBottom: 0, padding: '24px 28px', background: '#f8f9fc', borderBottom: '1px solid #edf2f7', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <div>
+                <Dialog.Title className={s.pageTitle} style={{ fontSize: '1.25rem', marginBottom: '2px' }}>Detalles del Producto</Dialog.Title>
+                <Dialog.Description className={s.pageSubtitle} style={{ fontSize: '0.875rem' }}>Información técnica y existencias</Dialog.Description>
+              </div>
+              <button 
+                onClick={() => setIsModalOpen(false)}
+                className="p-2 hover:bg-gray-200 rounded-full transition-colors"
+              >
+                <IoClose size={24} color="#64748b" />
+              </button>
+            </div>
+
+            <div className={s.detailCard} style={{ border: 'none', boxShadow: 'none', padding: '28px' }}>
+              <div className={s.detailGrid} style={{ gridTemplateColumns: 'repeat(2, 1fr)', gap: '20px' }}>
+                <div className={s.detailField}>
+                  <div className={s.detailLabel}>Código</div>
+                  <div className={s.detailValue} style={{ fontWeight: 700, color: '#8b46ff' }}>{selectedItem?.code}</div>
+                </div>
+                <div className={s.detailField}>
+                  <div className={s.detailLabel}>Categoría</div>
+                  <div className={s.detailValue}>{selectedItem?.category}</div>
+                </div>
+                <div className={s.detailField}>
+                  <div className={s.detailLabel}>Producto</div>
+                  <div className={s.detailValue}>{selectedItem?.name}</div>
+                </div>
+                <div className={s.detailField}>
+                  <div className={s.detailLabel}>Presentación</div>
+                  <div className={s.detailValue}>{selectedItem?.bottleSize} ml</div>
+                </div>
+                <div className={s.detailField}>
+                  <div className={s.detailLabel}>Precio de Venta</div>
+                  <div className={s.detailValue} style={{ color: '#22c55e', fontWeight: 600 }}>${selectedItem?.salePrice}</div>
+                </div>
+                <div className={s.detailField}>
+                  <div className={s.detailLabel}>Stock Actual</div>
+                  <div className={s.detailValue}>
+                    <span className={`${s.statusBadge} ${selectedItem && selectedItem.stock > 0 ? s.active : s.inactive}`} style={{ fontSize: '0.9rem', padding: '4px 12px' }}>
+                      {selectedItem?.stock} unidades
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <div style={{ marginTop: '10px', padding: '16px', background: '#f1f5f9', borderRadius: '12px', display: 'flex', gap: '20px', justifyContent: 'center' }}>
+                 <div style={{ textAlign: 'center' }}>
+                    <div className={s.detailLabel} style={{ marginBottom: '4px' }}>Total Entradas</div>
+                    <div style={{ color: '#22c55e', fontWeight: 700, fontSize: '1.1rem' }}>+{selectedItem?.entries}</div>
+                 </div>
+                 <div style={{ width: '1px', background: '#cbd5e1' }}></div>
+                 <div style={{ textAlign: 'center' }}>
+                    <div className={s.detailLabel} style={{ marginBottom: '4px' }}>Total Salidas</div>
+                    <div style={{ color: '#ef4444', fontWeight: 700, fontSize: '1.1rem' }}>-{selectedItem?.exits}</div>
+                 </div>
+              </div>
+
+              <div className={s.detailActions} style={{ justifyContent: 'flex-end', marginTop: '24px' }}>
+                <button 
+                  className={s.btnSecondary} 
+                  onClick={() => setIsModalOpen(false)}
+                  style={{ minWidth: '120px' }}
+                >
+                  Cerrar
+                </button>
+              </div>
+            </div>
+          </Dialog.Panel>
+        </div>
+      </Dialog>
 
       <style jsx>{`
         .animate-spin {

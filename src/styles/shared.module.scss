@@ -452,13 +452,39 @@
 
 .searchInput {
   @include input-base;
-  padding-left: 38px; // Space for icon
+  padding-left: 38px;
+  padding-right: 38px; // Space for clear button
   height: 42px;
 }
 
 .searchIcon {
   position: absolute;
   left: 12px;
-  color: $gray-400;
+  color: $gray-500; // Slightly darker
   pointer-events: none;
+  z-index: 2;
+}
+
+.clearSearch {
+  position: absolute;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  @include flex-center;
+  background: transparent;
+  border: none;
+  color: #666; // Darker gray for better visibility
+  cursor: pointer;
+  border-radius: 50%;
+  transition: all $transition-fast;
+  z-index: 20; // Ensure it's on top
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.05);
+    color: $primary-600;
+  }
+
+  svg {
+    display: block;
+  }
 }
