@@ -105,7 +105,7 @@ function RegistrarVenta() {
             </div>
           </div>
           <div className={s.fieldGroup}><label className={s.fieldLabel}>Producto</label><input className={s.fieldInput} value={product?.name || ''} readOnly /></div>
-          <div className={s.fieldGroup}><label className={s.fieldLabel}>Precio</label><input className={s.fieldInput} type="number" disabled value={price} onChange={e => setPrice(e.target.value)} /></div>
+          <div className={s.fieldGroup}><label className={s.fieldLabel}>Precio</label><input className={s.fieldInput} type="number" value={price} onChange={e => setPrice(e.target.value)} disabled/></div>
           <div className={s.fieldGroup}><label className={s.fieldLabel}>Cantidad</label><input className={s.fieldInput} type="number" value={quantity} onChange={e => setQuantity(e.target.value)} /></div>
           <button className={s.btnSuccess} onClick={addToCart} style={{ height: 42 }}><FiPlus size={16} /></button>
         </div>
