@@ -22,6 +22,7 @@ interface InventoryItem {
 }
 
 export default function InventarioPage() {
+
   const [items, setItems] = useState<InventoryItem[]>([]); // estado para los items
   const [loading, setLoading] = useState(true); // estado para el loading
   const [importing, setImporting] = useState(false); // estado para el importando
@@ -54,7 +55,7 @@ export default function InventarioPage() {
     fetchData();
   }, []);
 
-  const handleImportClick = () => {
+  const handleImportClick = () => { // manejo del click del boton de importar 
     fileInputRef.current?.click();
   };
 
@@ -72,7 +73,7 @@ export default function InventarioPage() {
         const workbook = XLSX.read(data, { type: 'array' }); // se lee el archivo
         const sheetName = workbook.SheetNames[0]; // se obtiene el nombre de la hoja
         const worksheet = workbook.Sheets[sheetName]; // se obtiene la hoja
-        const json = XLSX.utils.sheet_to_json(worksheet);
+        const json = XLSX.utils.sheet_to_json(worksheet); // se convierte el archivo a json
 
         // mapeo de columnas para nuestro formato esperado
         const mappedItems = json.map((row: any) => ({ // se mapea el archivo
@@ -89,7 +90,7 @@ export default function InventarioPage() {
           return;
         }
 
-        const res = await fetch('/api/inventory/import', {
+        const res = await fetch('/api/inventory/import', { // peticion para importar los datos
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ items: mappedItems })
@@ -113,7 +114,7 @@ export default function InventarioPage() {
     reader.readAsArrayBuffer(file);
   };
 
-  const handleClearInventory = async () => {
+  const handleClearInventory = async () => { // manejo del click del boton de limpiar inventario
     if (!window.confirm('¿Estás seguro de que deseas limpiar todo el inventario? Esta acción eliminará permanentemente todos los productos y registros relacionados.')) {
       return;
     }
@@ -139,8 +140,7 @@ export default function InventarioPage() {
     }
   };
 
-  
-  const handleRowClick = (item: InventoryItem) => {
+  const handleRowClick = (item: InventoryItem) => { // manejo del click de una fila
     setSelectedItem(item);
     setIsModalOpen(true);
   };

@@ -43,10 +43,10 @@ export default function DashboardPage() {
 
   // quick access 
   const quickAccess = [
-    { label: 'Productos', icon: <FiPackage size={20} />, link: '/dashboard/inventario', value: stats?.summary.totalProducts || 0, color: '#7c3aed' },
-    { label: 'Clientes', icon: <FiUsers size={20} />, link: '/dashboard/clientes', value: stats?.summary.totalClients || 0, color: '#ec4899' },
-    { label: 'Ventas Totales', icon: <FiShoppingBag size={20} />, link: '/dashboard/ventas', value: stats?.summary.totalSales || 0, color: '#f59e0b' },
-    { label: 'Stock Actual', icon: <FiPieChart size={20} />, link: '/dashboard/inventario', value: stats?.summary.currentStock || 0, color: '#10b981' },
+    { label: 'Productos', icon: <FiPackage size={20} />, link: '/dashboard/inventario', value: stats?.summary?.totalProducts ?? 0, color: '#7c3aed' },
+    { label: 'Clientes', icon: <FiUsers size={20} />, link: '/dashboard/clientes', value: stats?.summary?.totalClients ?? 0, color: '#ec4899' },
+    { label: 'Ventas Totales', icon: <FiShoppingBag size={20} />, link: '/dashboard/ventas', value: stats?.summary?.totalSales ?? 0, color: '#f59e0b' },
+    { label: 'Stock Actual', icon: <FiPieChart size={20} />, link: '/dashboard/inventario', value: stats?.summary?.currentStock ?? 0, color: '#10b981' },
   ];
 
   if (loading) return <div className={s.pageHeader}><h1 className={s.pageTitle}>Cargando Dashboard...</h1></div>;
@@ -156,7 +156,7 @@ export default function DashboardPage() {
                   paddingAngle={5}
                   dataKey="value"
                 >
-                  {stats?.categoryStats.map((entry, index) => (
+                  {stats?.categoryStats?.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                   ))}
                 </Pie>
